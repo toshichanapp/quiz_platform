@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe TypingQuestion, type: :model do
@@ -9,15 +11,15 @@ RSpec.describe TypingQuestion, type: :model do
       it 'be invalid' do
         typing_question.body = ''
         expect(typing_question).to be_invalid
-        expect(typing_question.errors[:body]).to include("Bodyを入力してください。")
+        expect(typing_question.errors[:body]).to include('Bodyを入力してください。')
 
-        typing_question.body =  ' '
+        typing_question.body = ' '
         expect(typing_question).to be_invalid
-        expect(typing_question.errors[:body]).to include("Bodyを入力してください。")
+        expect(typing_question.errors[:body]).to include('Bodyを入力してください。')
 
         typing_question.body = nil
         expect(typing_question).to be_invalid
-        expect(typing_question.errors[:body]).to include("Bodyを入力してください。")
+        expect(typing_question.errors[:body]).to include('Bodyを入力してください。')
       end
     end
 
@@ -25,15 +27,15 @@ RSpec.describe TypingQuestion, type: :model do
       it 'be invalid' do
         typing_question.typing_body = ''
         expect(typing_question).to be_invalid
-        expect(typing_question.errors[:typing_body]).to include("Typing bodyを入力してください。")
+        expect(typing_question.errors[:typing_body]).to include('Typing bodyを入力してください。')
 
-        typing_question.typing_body =  ' '
+        typing_question.typing_body = ' '
         expect(typing_question).to be_invalid
-        expect(typing_question.errors[:typing_body]).to include("Typing bodyを入力してください。")
+        expect(typing_question.errors[:typing_body]).to include('Typing bodyを入力してください。')
 
         typing_question.typing_body = nil
         expect(typing_question).to be_invalid
-        expect(typing_question.errors[:typing_body]).to include("Typing bodyを入力してください。")
+        expect(typing_question.errors[:typing_body]).to include('Typing bodyを入力してください。')
       end
     end
 
@@ -41,7 +43,7 @@ RSpec.describe TypingQuestion, type: :model do
       it 'be invalid' do
         typing_question.typing_body = '日本語'
         expect(typing_question).to be_invalid
-        expect(typing_question.errors[:typing_body]).to include("Typing bodyは不正な値です。")
+        expect(typing_question.errors[:typing_body]).to include('Typing bodyは不正な値です。')
       end
     end
   end

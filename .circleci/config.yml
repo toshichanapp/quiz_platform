@@ -1,0 +1,64 @@
+# See https://github.com/CircleCI-Public/circleci-demo-ruby-rails/blob/master/.circleci/config.yml
+
+version: 2.1
+
+orbs:
+  ruby: circleci/ruby@1.1.4
+
+executors:
+  ruby:
+    docker:
+      - image: cimg/ruby:3.0.2
+        environment:
+          BUNDLER_VERSION: 2.1.4
+          TZ: Asia/Tokyo
+          RAILS_ENV: test
+          PGHOST: 127.0.0.1
+          PGUSER: root
+#          ASSETS_DIGEST: true
+  rails:
+    docker:
+      - image: cimg/ruby:3.0.2
+        environment:
+          BUNDLER_VERSION: 2.1.4
+          TZ: Asia/Tokyo
+          RAILS_ENV: test
+          PGHOST: 127.0.0.1
+          PGUSER: root
+#          ASSETS_DIGEST: true
+      - image: circleci/postgres:12.5
+        environment:
+          POSTGRES_USER: root
+          POSTGRES_DB: quiz_platform_test
+          POSTGRES_PASSWORD: test
+
+jobs:
+  build:
+    executor: ruby
+    steps:
+      - checkout
+      - ruby/install-deps
+  test:
+    parallelism: 3
+    executor: rails
+    steps:
+      - checkout
+      - ruby/install-deps
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: Database setup
+          command: bundle exec rails db:schema:load --trace
+      # Run rspec in parallel
+      - ruby/rspec-test
+      - ruby/rubocop-check
+
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - build
+      - test:
+          requires:
+            - build

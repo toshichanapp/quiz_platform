@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe Book, type: :model do
@@ -9,15 +11,15 @@ RSpec.describe Book, type: :model do
       it 'be invalid' do
         book.key = ''
         expect(book).to be_invalid
-        expect(book.errors[:key]).to include("Keyを入力してください。")
+        expect(book.errors[:key]).to include('Keyを入力してください。')
 
-        book.key =  ' '
+        book.key = ' '
         expect(book).to be_invalid
-        expect(book.errors[:key]).to include("Keyを入力してください。")
+        expect(book.errors[:key]).to include('Keyを入力してください。')
 
         book.key = nil
         expect(book).to be_invalid
-        expect(book.errors[:key]).to include("Keyを入力してください。")
+        expect(book.errors[:key]).to include('Keyを入力してください。')
       end
     end
 
@@ -25,25 +27,25 @@ RSpec.describe Book, type: :model do
       it 'be invalid' do
         book.key = '日本語'
         expect(book).to be_invalid
-        expect(book.errors[:key]).to include("Keyは不正な値です。")
+        expect(book.errors[:key]).to include('Keyは不正な値です。')
 
         book.key = 'HOGE'
         expect(book).to be_invalid
-        expect(book.errors[:key]).to include("Keyは不正な値です。")
+        expect(book.errors[:key]).to include('Keyは不正な値です。')
 
         book.key = 'hoge123HOGE'
         expect(book).to be_invalid
-        expect(book.errors[:key]).to include("Keyは不正な値です。")
+        expect(book.errors[:key]).to include('Keyは不正な値です。')
       end
     end
 
     context 'when key is not unique' do
-      let(:persisted_book){ create(:book) }
+      let(:persisted_book) { create(:book) }
 
       it 'be invalid' do
         book.key = persisted_book.key
         expect(book).to be_invalid
-        expect(book.errors[:key]).to include("Keyはすでに存在します。")
+        expect(book.errors[:key]).to include('Keyはすでに存在します。')
       end
     end
   end
